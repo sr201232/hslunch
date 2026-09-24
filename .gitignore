@@ -1,0 +1,10 @@
+**/wifi_private.h
+**/build/
+*.bin
+*.elf
+*.map
+*.zip
+*.log
+__pycache__/
+font-tools/glyphs.json
+.env*
