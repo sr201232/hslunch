@@ -12,13 +12,13 @@ inline int clockAdvance(uint32_t c) { return c=='.' || c==':' ? 5 : (c==' ' ? 7 
 inline uint32_t speed(uint8_t page) {
   return 45;
 }
-constexpr uint8_t PAGE_COUNT = 9;
+constexpr uint8_t PAGE_COUNT = 7;
 
 inline bool scrolls(uint8_t page) {
-  return page == 1 || page == 3 || page == 5 || page == 7 || page == 8;
+  return page == 1 || page == 3 || page == 5 || page == 6;
 }
 inline uint8_t next(uint8_t page) { return (page + 1) % PAGE_COUNT; }
-inline bool slidesUp(uint8_t from) { return from < 7; }
+inline bool slidesUp(uint8_t from) { return from < 5; }
 inline int travel(int width) { return width > WIDTH ? width - WIDTH : 0; }
 inline uint32_t duration(uint8_t page, int width) {
   if (scrolls(page))
@@ -43,5 +43,5 @@ inline int slideY(uint32_t elapsed) {
 }
 }
 
-constexpr char PROJECT_CREDIT[] = "급식정보 전광판 프로젝트 by 30805 김아준, github.com/sr201232/hslunch";
+constexpr char PROJECT_CREDIT[] = "급식정보 전광판 프로젝트 v1 by 30805김아준, GitHub @sr201232";
 constexpr char AD_TEXT[] = "지성: 지극과 정성 / 상암고등학교";

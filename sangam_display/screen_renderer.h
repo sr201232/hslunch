@@ -8,7 +8,6 @@ struct ScreenPage {
   char mealDate[9] = {};
 };
 #include "sangam18.h"
-#include "origin_format.h"
 ScreenPage activePage, incomingPage;
 bool sequenceStarted = false, transitioning = false;
 uint32_t pageBegan = 0, transitionBegan = 0;
@@ -26,10 +25,9 @@ int textWidth(const String &text) {
   while (*p) width += glyphAdvance(readCodepoint(p));
   return width;
 }
-#include "origin_pages.h"
 
 uint16_t pageColor(uint8_t page) {
-  if (page == 8) return panel->color565(255,255,255);
+  if (page == 6) return panel->color565(255,255,255);
   return page % 2 == 0 ? panel->color565(0,255,0) : panel->color565(255,255,0);
 }
 void drawGlyph(uint32_t code, int x, int y, uint16_t color) {
@@ -62,13 +60,8 @@ ScreenPage makePage(uint8_t number) {
   if (number == 0) page.text = clockText(true);
   else if (number == 1) page.text = PROJECT_CREDIT;
   else if (number == 2) page.text = "급식 정보";
-  else if (number == 4) {
-    prepareOriginPages();
-    page.text = "원산지 정보";
-    if (originParts.size()>1) page.text += " " + String(originCursor+1) + "/" + String(originParts.size());
-  }
-  else if (number == 6) page.text = "칼로리 정보";
-  else if (number == 8) page.text = AD_TEXT;
+  else if (number == 4) page.text = "칼로리 정보";
+  else if (number == 6) page.text = AD_TEXT;
   else {
     char today[9];
     bool timed = currentDate(today, sizeof(today));
@@ -78,8 +71,7 @@ ScreenPage makePage(uint8_t number) {
       strlcpy(page.mealDate, shown.date, sizeof(page.mealDate));
       if (shown.noMeal) page.text = "등록된 중식 정보 없음";
       else if (number == 3) page.text = String(shown.menu);
-      else if (number == 7) page.text = String(shown.calories);
-      else { prepareOriginPages(); page.text = originParts[originCursor]; }
+      else page.text = String(shown.calories);
       if (!timed) page.text = "시간 미확인 / 저장 " + String(shown.date) + " / " + page.text;
     }
   }
@@ -107,8 +99,6 @@ void drawPage(const ScreenPage &page, int offsetX, int offsetY, uint32_t elapsed
 }
 
 void startPage(ScreenPage page, uint32_t now) {
-  if (page.number == 6 && activePage.number == 5 && !originParts.empty())
-    originCursor = (originCursor+1) % originParts.size();
   activePage = page;
   pageBegan = now;
   transitioning = false;
