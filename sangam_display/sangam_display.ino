@@ -231,7 +231,7 @@ void openPortal() {
 void setup() {
   Serial.begin(115200);
   pinMode(BOOT_BUTTON, INPUT_PULLUP);
-  Serial.println("\n[SANGAM] ESP32 unit 2 / 256x32 / firmware 1.4.0");
+  Serial.println("\n[SANGAM] ESP32 unit 2 / 256x32 / firmware 1.5.0");
   if (!runParserChecks() || !runDisplayChecks()) {
     Serial.println("[FATAL] startup checks failed; network disabled");
     for (;;) delay(1000);

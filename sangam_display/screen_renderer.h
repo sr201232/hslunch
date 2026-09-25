@@ -29,6 +29,7 @@ int textWidth(const String &text) {
 #include "origin_pages.h"
 
 uint16_t pageColor(uint8_t page) {
+  if (page == 8) return panel->color565(255,255,255);
   return page % 2 == 0 ? panel->color565(0,255,0) : panel->color565(255,255,0);
 }
 void drawGlyph(uint32_t code, int x, int y, uint16_t color) {
@@ -102,10 +103,7 @@ void drawPageText(const ScreenPage &page, int offsetX, int offsetY, uint32_t ela
 }
 
 void drawPage(const ScreenPage &page, int offsetX, int offsetY, uint32_t elapsed) {
-  if (page.number != 8) { drawPageText(page,offsetX,offsetY,elapsed); return; }
-  int period = page.width + DisplaySequence::AD_GAP;
-  for (int x = DisplaySequence::adX(page.width,elapsed); x < PANEL_WIDTH; x += period)
-    drawPageText(page,x,offsetY,elapsed);
+  drawPageText(page,offsetX,offsetY,elapsed);
 }
 
 void startPage(ScreenPage page, uint32_t now) {

@@ -7,19 +7,15 @@ constexpr int WIDTH = 256;
 constexpr int HEIGHT = 32;
 constexpr uint32_t HOLD_MS = 1000;
 constexpr uint32_t SLIDE_MS = 400;
-constexpr int AD_GAP = 48;
 constexpr int CLOCK_WIDTH = 154;
 inline int clockAdvance(uint32_t c) { return c=='.' || c==':' ? 5 : (c==' ' ? 7 : 11); }
 inline uint32_t speed(uint8_t page) {
-  return 42;
-}
-inline int adX(int width, uint32_t elapsed) {
-  return -int((uint64_t(elapsed) * speed(8) / 1000) % (width + AD_GAP));
+  return 45;
 }
 constexpr uint8_t PAGE_COUNT = 9;
 
 inline bool scrolls(uint8_t page) {
-  return page == 1 || page == 3 || page == 5 || page == 7;
+  return page == 1 || page == 3 || page == 5 || page == 7 || page == 8;
 }
 inline uint8_t next(uint8_t page) { return (page + 1) % PAGE_COUNT; }
 inline bool slidesUp(uint8_t from) { return from < 7; }
@@ -28,7 +24,6 @@ inline uint32_t duration(uint8_t page, int width) {
   if (scrolls(page))
     return HOLD_MS * 2 + (uint32_t(travel(width)) * 1000 + speed(page) - 1) / speed(page);
   if (page == 0) return 2000;
-  if (page == 8) return 10000;
   return 1000;
 }
 inline int x(uint8_t page, int width, uint32_t elapsed) {
